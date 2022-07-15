@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const  {MongoClient, ObjectId} = require('mongodb')
+const {MongoClient, ObjectId } = require('mongodb')
+const { response } = require('express')
+const { request } = require('http')
 require('dotenv').config()
 const PORT = 8000
 
@@ -12,19 +14,14 @@ let db,
 
 MongoClient.connect(dbConnectionStr)
     .then(client => {
-        console.log('Connected to database')
+        console.log(`Connected to database`)
         db = client.db(dbName)
         collection = db.collection('movies')
-    }) 
-
+    })
 
 app.use(express.urlencoded({extended : true}))
 app.use(express.json())
 app.use(cors())
-
-app.listen(process.env.PORT || PORT, () => {
-    console.log(`Server is running.`)
-})
 
 app.get("/search", async (request,response) => {
     try {
@@ -65,3 +62,4 @@ app.get("/get/:id", async (request, response) => {
 app.listen(process.env.PORT || PORT, () => {
     console.log(`Server is running.`)
 })
+
